@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: "postgres:latest"
+    container_name: "postgres"
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  postgres_test:
+    image: "postgres:latest"
+    container_name: "postgres_test"
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    container_name: "rabbitmq"
+    ports:
+      - "15672:15672"  # Web UI for RabbitMQ
+      - "5672:5672"    # RabbitMQ message broker port
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  worker:
+    build:
+      context: .
+      dockerfile: tasks/Dockerfile
+    image: madefire/chordtest
+    container_name: "celery_worker"
+    command: [ 'celery', '-A', 'tasks.tasks', 'worker', '-l', 'info' ]
+    environment:
+      - BROKER_URL=amqp://user:password@rabbitmq:5672//
+      - C_FORCE_ROOT=true
+    volumes:
+      - ./:/app/
+    depends_on:
+      - rabbitmq
+
+  app:
+    container_name: "app"
+    build: .
+    ports:
+      - "5001:5001"
+
+volumes:
+  postgres_data:
+  postgres_test_data:

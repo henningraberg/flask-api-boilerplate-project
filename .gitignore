@@ -4,6 +4,7 @@
 # Packages
 *.egg
 *.egg-info
+*.xml
 dist
 build
 eggs
@@ -34,3 +35,4 @@ logs
 migrations/schema.sql
 .flaskenv
 .vscode
+.idea

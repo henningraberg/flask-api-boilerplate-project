@@ -1,4 +1,7 @@
 # flask-api-boiler-plate-project
-<img src="images/project_logo.jpg" alt="Sample Image" width="150" style="display: block; margin: auto;">
+<p align="center">
+  <img src="images/project_logo.jpg" width="200">
+</p>
+
 
 This is a boilerplate project for creating RESTful APIs using Flask, Celery, RabbitMQ, PostgreSQL.

@@ -23,4 +23,4 @@ def shutdown_session(response_or_exc):
 
 
 # Public views
-bp.add_url_rule("/", view_func=hello_world)
+bp.add_url_rule('/', view_func=hello_world)

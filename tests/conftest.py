@@ -9,7 +9,8 @@ from app import create_app, db_manager
 # alias
 Base = db_manager.base
 
-@pytest.fixture(scope="session")
+
+@pytest.fixture(scope='session')
 def app(request):
     app = create_app(config_name='test')
 
@@ -30,22 +31,22 @@ def app(request):
     return app
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def client(app):
     """A test client for the app."""
     return app.test_client()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def _connection(app):
-    engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     connection = engine.connect()
     yield connection
     connection.close()
 
 
 # Session = scoped_session(sessionmaker())
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def _scoped_session(app):
     Session = scoped_session(sessionmaker())
     return Session
@@ -59,7 +60,7 @@ def db(_connection, _scoped_session, request):
     session = Session(bind=_connection)
     session.begin_nested()
 
-    @event.listens_for(session, "after_transaction_end")
+    @event.listens_for(session, 'after_transaction_end')
     def restart_savepoint(db_session, transaction):
         """Support tests with rollbacks.
 

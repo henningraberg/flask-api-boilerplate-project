@@ -20,36 +20,36 @@ fileConfig(config.config_file_name)
 # Get db uri depending on argument passed
 
 cmd_kwargs = context.get_x_argument(as_dictionary=True)
-if "db" not in cmd_kwargs:
+if 'db' not in cmd_kwargs:
     raise Exception(
         "We couldn't find `db` in the CLI arguments. "
-        "Please verify `alembic` was run with `-x db=<db_name>` "
-        "(e.g. `alembic -x db=development upgrade head`)"
+        'Please verify `alembic` was run with `-x db=<db_name>` '
+        '(e.g. `alembic -x db=development upgrade head`)'
     )
 
-db_env = cmd_kwargs["db"]
+db_env = cmd_kwargs['db']
 
-if db_env not in ["dev", "test"]:
+if db_env not in ['dev', 'test']:
     raise Exception(
-        "The `db` argument only accepts `dev` or `test`."
-        "Please verify `alembic` was run with `-x db=<db_name>` "
-        "(e.g. `alembic -x db=development upgrade head`)"
+        'The `db` argument only accepts `dev` or `test`.'
+        'Please verify `alembic` was run with `-x db=<db_name>` '
+        '(e.g. `alembic -x db=development upgrade head`)'
     )
 
 
 def get_dot_env():
     cwd = Path(os.getcwd())
-    env_file = Path(cwd, ".flaskenv")
+    env_file = Path(cwd, '.flaskenv')
     values = dotenv_values(env_file)
     return values
 
 
 env_values = get_dot_env()
 
-if db_env == "dev":
-    config.set_main_option("sqlalchemy.url", env_values["DEV_DATABASE_URI"])
-elif db_env == "test":
-    config.set_main_option("sqlalchemy.url", env_values["TEST_DATABASE_URI"])
+if db_env == 'dev':
+    config.set_main_option('sqlalchemy.url', env_values['DEV_DATABASE_URI'])
+elif db_env == 'test':
+    config.set_main_option('sqlalchemy.url', env_values['TEST_DATABASE_URI'])
 
 
 # add your model's MetaData object here
@@ -85,12 +85,12 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = config.get_main_option('sqlalchemy.url')
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
+        dialect_opts={'paramstyle': 'named'},
     )
 
     with context.begin_transaction():
@@ -106,7 +106,7 @@ def run_migrations_online():
     """
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
+        prefix='sqlalchemy.',
         poolclass=pool.NullPool,
     )
 

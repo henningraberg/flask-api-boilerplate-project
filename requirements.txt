@@ -32,3 +32,4 @@ werkzeug==3.0.0; python_version >= "3.6"
 zipp==3.7.0; python_version < "3.9" and python_version >= "3.7"
 Celery
 ipython==6.0.0
+ruff
